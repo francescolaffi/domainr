@@ -4,6 +4,7 @@
  *
  * @author Francesco Laffi @francescolaffi
  * @license MIT
+ * @version 0.2014.04.21
  */
 
 var path = require('path'),
@@ -32,10 +33,16 @@ https.get('https://domai.nr/api/json/search?q=' + process.argv[2].trim())
 
     // parse and validate response
     var data = JSON.parse(res.body);
-    if(!Array.isArray(data.results) || !data.results.length) {
+    if(!Array.isArray(data.results)) {
       console.error('Invalid Response:');
       console.error(res.body);
       process.exit(1);
+    }
+
+    // no results
+    if(!data.results.length) {
+      console.log('No results for', data.query);
+      process.exit(0);
     }
 
     // print results
